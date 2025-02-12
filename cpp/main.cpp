@@ -41,16 +41,16 @@ void fazQuick(vector<int>& A) {
     for (int i = pow(2, 10); i <= pow(2,30); i *= 2) {  // Limitação para tamanhos mais controlados
         preencherVetor(A, i);
         long long tempoQuick = medirTempo([&](vector<int>& vec) { quickSort(vec, 0, vec.size() - 1); }, A);
-        cout <<"Quicksort: Tempo para ordenar vetor de " << i << " elementos: " << tempoQuick << " microsecond" << endl;
+        cout <<"Quicksort: Tempo para ordenar vetor de " << i << " elementos: " << tempoQuick / (float)1000000<< " s" << endl;
     }
 }
 
 // Função para rodar o HeapSort e medir o tempo
 void fazHeap(vector<int>& A) {
-    for (int i = pow(2, 5); i <= pow(2,25); i *= 2) {  // Limitação para tamanhos mais controlados
+    for (int i = pow(2, 10); i <= pow(2,30); i *= 2) {  // Limitação para tamanhos mais controlados
         preencherVetor(A, i);
         long long tempoHeap = medirTempo([&](vector<int>& vec) { heapSort(vec); }, A);  
-        cout <<"HeapSort: Tempo para ordenar vetor de " << i << " elementos: " << tempoHeap << " microsecond" << endl;
+        cout <<"HeapSort: Tempo para ordenar vetor de " << i << " elementos: " << tempoHeap/(float)1000000 << " s" << endl;
     }
 }
 
@@ -59,7 +59,7 @@ void fazShell(vector<int>& A) {
     for (int i = pow(2, 5); i <= pow(2,25); i *= 2) {  // Limitação mais controlada para ShellSort
         preencherVetor(A, i);
         long long tempoShell = medirTempo([&](vector<int>& vec) { shellSort(vec); }, A);
-        cout <<"ShellSort: Tempo para ordenar vetor de " << i << " elementos: " << tempoShell << " microsecond" << endl;
+        cout <<"ShellSort: Tempo para ordenar vetor de " << i << " elementos: " << tempoShell/(float)1000000 << " s" << endl;
     }
 }
 
@@ -68,15 +68,15 @@ int main() {
     srand(time(0));  // Inicializa o gerador de números aleatórios
 
     vector<int> A;
-    
+    for (int i = 0; i < 11; i++){
+        fazHeap(A);
+        std::cout<<endl;
+    }  
     for (int i = 0; i < 11; i++){
         fazQuick(A);
         std::cout<<endl;
     }
-    for (int i = 0; i < 11; i++){
-        fazHeap(A);
-        std::cout<<endl;
-    }    
+  
     
     //fazQuick(A); 
 
