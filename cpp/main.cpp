@@ -34,32 +34,32 @@ long long medirTempo(Func func, vector<int>& A) {
     auto fim = chrono::high_resolution_clock::now();
     
     // Calcula e retorna a diferença em milissegundos entre o tempo de início e fim
-    return chrono::duration_cast<chrono::milliseconds>(fim - inicio).count();
+    return chrono::duration_cast<chrono::microseconds>(fim - inicio).count();
 }
 // Função para rodar o QuickSort e medir o tempo
 void fazQuick(vector<int>& A) {
-    for (int i = 10e3; i <= 10e7; i *= 10) {  // Limitação para tamanhos mais controlados
+    for (int i = pow(2, 10); i <= pow(2,30); i *= 2) {  // Limitação para tamanhos mais controlados
         preencherVetor(A, i);
         long long tempoQuick = medirTempo([&](vector<int>& vec) { quickSort(vec, 0, vec.size() - 1); }, A);
-        cout <<"Quicksort: Tempo para ordenar vetor de " << i << " elementos: " << tempoQuick << " ms" << endl;
+        cout <<"Quicksort: Tempo para ordenar vetor de " << i << " elementos: " << tempoQuick << " microsecond" << endl;
     }
 }
 
 // Função para rodar o HeapSort e medir o tempo
 void fazHeap(vector<int>& A) {
-    for (int i = 10e3; i <= 10e7; i *= 10) {  // Limitação para tamanhos mais controlados
+    for (int i = pow(2, 5); i <= pow(2,25); i *= 2) {  // Limitação para tamanhos mais controlados
         preencherVetor(A, i);
         long long tempoHeap = medirTempo([&](vector<int>& vec) { heapSort(vec); }, A);  
-        cout <<"HeapSort: Tempo para ordenar vetor de " << i << " elementos: " << tempoHeap << " ms" << endl;
+        cout <<"HeapSort: Tempo para ordenar vetor de " << i << " elementos: " << tempoHeap << " microsecond" << endl;
     }
 }
 
 // Função para rodar o ShellSort e medir o tempo
 void fazShell(vector<int>& A) {
-    for (int i = 10e3; i <= 10e7; i *= 10) {  // Limitação mais controlada para ShellSort
+    for (int i = pow(2, 5); i <= pow(2,25); i *= 2) {  // Limitação mais controlada para ShellSort
         preencherVetor(A, i);
         long long tempoShell = medirTempo([&](vector<int>& vec) { shellSort(vec); }, A);
-        cout <<"ShellSort: Tempo para ordenar vetor de " << i << " elementos: " << tempoShell << " ms" << endl;
+        cout <<"ShellSort: Tempo para ordenar vetor de " << i << " elementos: " << tempoShell << " microsecond" << endl;
     }
 }
 
@@ -73,8 +73,10 @@ int main() {
         fazQuick(A);
         std::cout<<endl;
     }
-    //fazHeap(A);  
-    
+    for (int i = 0; i < 11; i++){
+        fazHeap(A);
+        std::cout<<endl;
+    }    
     
     //fazQuick(A); 
 
