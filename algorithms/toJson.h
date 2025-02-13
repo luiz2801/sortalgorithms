@@ -18,6 +18,7 @@ void writeJson(const string& algorithm, long long time, int size) {
     Document document;
     document.SetObject();
     Document::AllocatorType& allocator = document.GetAllocator();
+    string path = "plot/comparison.json";
 
     // Cria o objeto JSON para o algoritmo
     Value algorithmObj(kObjectType);
@@ -28,7 +29,7 @@ void writeJson(const string& algorithm, long long time, int size) {
     algorithmObj.AddMember("size", Value(static_cast<int>(size)).Move(), allocator);
 
     // Se o arquivo JSON já existe, carrega o conteúdo existente
-    ifstream inputFile("resultados.json");
+    ifstream inputFile(path);
     if (inputFile.is_open()) {
         // Lê o conteúdo do arquivo
         string jsonStr((istreambuf_iterator<char>(inputFile)), istreambuf_iterator<char>());
@@ -51,7 +52,7 @@ void writeJson(const string& algorithm, long long time, int size) {
     document.Accept(writer);
 
     // Abre o arquivo de saída (ou cria um novo)
-    ofstream outputFile("resultados.json");
+    ofstream outputFile(path);
     if (outputFile.is_open()) {
         outputFile << buffer.GetString();
         outputFile.close();

@@ -4,6 +4,7 @@
 #include <vector>
 #include <chrono>
 #include <cmath>
+#include <Python.h>
 
 #include "algorithms/quicksort.h"  
 #include "algorithms/heapsort.h"   
@@ -13,7 +14,7 @@
 using namespace std;
 
 // Função para preencher o vetor com números aleatórios
-void preencherVetor(vector<int>& A, int k) {
+void fillVector(vector<int>& A, int k) {
     A.clear();  // Limpa o vetor antes de preencher
     A.reserve(k);  // Evita realocações desnecessárias
     for (int i = 0; i < k; i++) {
@@ -40,44 +41,79 @@ long medirTempo(Func func, vector<int>& A) {
 
 
 
-void fazQuick(vector<int>& A, int exp) {
+void quickTime(vector<int>& A, int exp) {
     for (int i = pow(2, 10); i <= pow(2, exp); i *= 2) {  // Limitação para tamanhos mais controlados
-        preencherVetor(A, i);
-        long long tempoQuick = medirTempo([&](vector<int>& vec) { quickSort(vec, 0, vec.size() - 1); }, A);
-        cout << "Quicksort: Tempo para ordenar vetor de " << i << " elementos: " << tempoQuick / (float)1000000 << " s" << endl;
+        fillVector(A, i);
+        long long time = medirTempo([&](vector<int>& vec) { quickSort(vec, 0, vec.size() - 1); }, A);
+        cout << "Quicksort: Tempo para ordenar vetor de " << i << " elementos: " << time / (float)1000000 << " s" << endl;
         // Aqui chamamos a função writeJson
-        writeJson("QuickSort", tempoQuick, A.size() - 1, i);
+        writeJson("QuickSort", time, A.size() - 1);
     }
 }
 
 
-void fazHeap(vector<int>& A, int exp) {
+void heapTime(vector<int>& A, int exp) {
     for (int i = pow(2, 10); i <= pow(2, exp); i *= 2) {  // Limitação para tamanhos mais controlados
-        preencherVetor(A, i);
-        long long tempoHeap = medirTempo([&](vector<int>& vec) { heapSort(vec); }, A);
-        cout <<"HeapSort: Tempo para ordenar vetor de " << i << " elementos: " << tempoHeap/(float)1000000 << " s" << endl;
+        fillVector(A, i);
+        long long time = medirTempo([&](vector<int>& vec) { heapSort(vec); }, A);
+        cout <<"HeapSort: Tempo para ordenar vetor de " << i << " elementos: " << time/(float)1000000 << " s" << endl;
         // Aqui chamamos a função writeJson
-        writeJson("HeapSort", tempoHeap, i);
+        writeJson("HeapSort", time, i);
     }
 }
 
-void fazShell(vector<int>& A, int exp) {
+void shellTime(vector<int>& A, int exp) {
     for (int i = pow(2, 10); i <= pow(2, exp); i *= 2) {  // Limitação para tamanhos mais controlados
-        preencherVetor(A, i);
-        long long tempoShell = medirTempo([&](vector<int>& vec) { shellSort(vec); }, A);
-        cout <<"ShellSort: Tempo para ordenar vetor de " << i << " elementos: " << tempoShell/(float)1000000 << " s" << endl;
+        fillVector(A, i);
+        long long time = medirTempo([&](vector<int>& vec) { shellSort(vec); }, A);
+        cout <<"ShellSort: Tempo para ordenar vetor de " << i << " elementos: " << time/(float)1000000 << " s" << endl;
         // Aqui chamamos a função writeJson
-        writeJson("ShellSort", tempoShell, i);
+        writeJson("ShellSort", time, i);
     }
 }
 
 
 int main() {
     srand(time(0));  // Inicializa o gerador de números aleatórios
-    int exp = 15;
+    int exp = 23;
     vector<int> A;
-    fazQuick(A, exp);
-    fazHeap(A, exp);
-    fazShell(A, exp);
+    quickTime(A, exp);
+    heapTime(A, exp);
+    shellTime(A, exp);
+
+    // Inicializa o interpretador Python
+    Py_Initialize();
+
+    // Nome do arquivo do script (sem ".py")
+    PyObject *sysPath = PySys_GetObject("path");
+    PyList_Append(sysPath, PyUnicode_DecodeFSDefault("."));
+    PyObject *pName = PyUnicode_DecodeFSDefault("plot.plot");
+
+    // Importa o módulo (o script Python precisa estar no mesmo diretório ou no PYTHONPATH)
+    PyObject *pModule = PyImport_Import(pName);
+    Py_XDECREF(pName);
+
+    if (pModule != nullptr) {
+        // Obtém a função desejada do script
+        PyObject *pFunc = PyObject_GetAttrString(pModule, "plotar_grafico");
+
+        // Verifica se a função pode ser chamada
+        if (PyCallable_Check(pFunc)) {
+            // Chama a função Python sem argumentos
+            PyObject_CallObject(pFunc, nullptr);
+        } else {
+            std::cerr << "Erro: Função não encontrada ou não pode ser chamada.\n";
+        }
+
+        Py_XDECREF(pFunc);
+        Py_XDECREF(pModule);
+    } else {
+        PyErr_Print();
+        std::cerr << "Erro: Não foi possível importar o script Python.\n";
+    }
+
+    // Finaliza o interpretador Python
+    Py_Finalize();
+
     return 0;
 }

@@ -1,30 +1,3 @@
-//#include <iostream>
-//#include <vector>
-//using namespace std;
-//
-//int partition(vector<int>& A, int p, int r) {
-//   int mid = p + (r - p) / 2; // Encontra o índice do meio
-//   int x = A[mid]; // Pivô será o elemento no meio do vetor
-//   swap(A[mid], A[r]); // Coloca o pivô na última posição para fazer a partição
-//   int i = p - 1;
-//  
-//   for (int j = p; j < r; j++) {
-//       if (A[j] <= x) {
-//           i = i + 1;
-//           swap(A[i], A[j]);
-//       }
-//   }
-//   swap(A[i + 1], A[r]); // Coloca o pivô no lugar correto
-//   return i + 1;
-//}
-//void quicksort(vector<int>& A, int p, int r) {
-//   if (p < r) {
-//       int q = partition(A, p, r);
-//       quicksort(A, p, q - 1);  // Recursão na parte esquerda
-//       quicksort(A, q + 1, r);  // Recursão na parte direita
-//   }
-//}
-//
 #include <iostream>
 #include <vector>
 
