@@ -1,28 +1,51 @@
 import json
+import matplotlib
+matplotlib.use('GTK3Agg')
 import matplotlib.pyplot as plt
 
 def plotar_grafico():
+    # Carrega o conteúdo do arquivo JSON
     with open("plot/comparison.json") as f:
         doc = json.load(f)
 
-    sizes = [obj.get("size") for obj in doc["QuickSort"]] # só precisa pegar uma vez, afinal todos são iguais
-    quick_times = [obj.get("time") for obj in doc["QuickSort"]]
-    shell_times = [obj.get("time") for obj in doc["ShellSort"]]
-    heap_times = [obj.get("time") for obj in doc["HeapSort"]]
-    f.close()
+    # Extrai os tamanhos e tempos de execução para cada algoritmo
+    sizes = [obj.get("size") for obj in doc.get("QuickSort", [])]
+    quick_times = [obj.get("time") for obj in doc.get("QuickSort", [])]
+    iterative_times = [obj.get("time") for obj in doc.get("QuickIterative", [])]
+    heap_times = [obj.get("time") for obj in doc.get("HeapSort", [])]
+    shell_times = [obj.get("time") for obj in doc.get("ShellSort", [])]
 
+    # Verifica se há dados para plotar
+    if not sizes:
+        print("Nenhum dado encontrado para os algoritmos.")
+        return
 
-    # Plotar os resultados
+    # Cria o gráfico
     plt.figure(figsize=(10, 6))
-    plt.plot(sizes, quick_times, label="QuickSort", marker='o')
-    plt.plot(sizes, shell_times, label="ShellSort", marker='s')
-    plt.plot(sizes, heap_times, label="HeapSort", marker='^')
+    if quick_times:
+        plt.plot(sizes, quick_times, label="QuickSort", marker='o')
+    if iterative_times:
+        plt.plot(sizes, iterative_times, label="QuickSort Iterativo", marker='s')
+    if heap_times:
+        plt.plot(sizes, heap_times, label="HeapSort", marker='^')
+    if shell_times:
+        plt.plot(sizes, shell_times, label="ShellSort", marker='d')
 
+    # Adiciona rótulos e título
     plt.xlabel('Tamanho do Vetor (n)')
     plt.ylabel('Tempo de Execução (s)')
-    plt.title('Comparação de Tempos de Ordenação')
-    plt.xscale('log', base=2)  # Escala logarítmica para o eixo x
-    plt.yscale('log')  # Escala logarítmica para o eixo y (opcional, dependendo dos dados)
+    plt.title('Comparação de Tempos de Execução dos Algoritmos de Ordenação')
+
+    # Configura a escala logarítmica para o eixo x
+    plt.xscale('log', base=2)
+    plt.yscale('log')  # Escala logarítmica para o eixo y
+
+    # Exibe a legenda e a grade
     plt.legend()
     plt.grid(True)
+
+    # Exibe o gráfico
     plt.show()
+
+# Chama a função para plotar o gráfico
+plotar_grafico()

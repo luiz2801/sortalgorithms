@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -5,7 +6,7 @@
 #include <chrono>
 #include <cmath>
 #include <Python.h>
-
+#include "algorithms/quickiterative.h"
 #include "algorithms/quicksort.h"  
 #include "algorithms/heapsort.h"   
 #include "algorithms/shellsort.h"  
@@ -51,6 +52,16 @@ void quickTime(vector<int>& A, int exp) {
     }
 }
 
+void iterativeTime(vector<int>& A, int exp) {
+    for (int i = pow(2, 10); i <= pow(2, exp); i *= 2) {  // Limitação para tamanhos mais controlados
+        fillVector(A, i);
+        long long time = medirTempo([&](vector<int>& vec) { iterativeQuickSort(vec); }, A);
+        cout << "Quicksort iterativo: Tempo para ordenar vetor de " << i << " elementos: " << time / (float)1000000 << " s" << endl;
+        // Aqui chamamos a função writeJson
+        writeJson("QuickIterative", time, A.size() - 1);
+    }
+}
+
 
 void heapTime(vector<int>& A, int exp) {
     for (int i = pow(2, 10); i <= pow(2, exp); i *= 2) {  // Limitação para tamanhos mais controlados
@@ -75,9 +86,10 @@ void shellTime(vector<int>& A, int exp) {
 
 int main() {
     srand(time(0));  // Inicializa o gerador de números aleatórios
-    int exp = 23;
+    int exp = 26;
     vector<int> A;
     quickTime(A, exp);
+    iterativeTime(A, exp);
     heapTime(A, exp);
     shellTime(A, exp);
 

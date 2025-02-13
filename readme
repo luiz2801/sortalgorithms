@@ -1,0 +1,7 @@
+
+O Makefile fornecido automatiza o processo de compilação de um programa C++ que utiliza a API do Python, configurando corretamente os parâmetros necessários para 
+encontrar tanto os cabeçalhos do Python quanto as bibliotecas de tempo de execução. A variável CFLAGS é preenchida com os diretórios de cabeçalhos do Python, obtidos 
+através do comando python3-config --cflags, enquanto a variável LDFLAGS inclui as bibliotecas do Python, obtidas por python3-config --ldflags, além de adicionar 
+explicitamente o -lpython3.10 para garantir que o linker encontre a biblioteca libpython3.10.so necessária para vinculação. O Makefile então chama o compilador g++, passando 
+esses parâmetros para compilar o código fonte (main.cpp) e gerar o executável (teste), simplificando o processo de construção e evitando a necessidade de passar manualmente 
+os parâmetros ao executar o compilador.
