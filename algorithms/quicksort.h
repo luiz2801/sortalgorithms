@@ -1,4 +1,3 @@
-#include <iostream>
 #include <vector>
 
 // Função para particionar o vetor

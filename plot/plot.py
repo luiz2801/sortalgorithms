@@ -7,6 +7,7 @@ def get_doc(path: str):
     # Carrega o conteúdo do arquivo JSON
     with open(path, "r") as f:
         doc = json.load(f)
+        return doc
 def plotar_grafico():
     doc = get_doc("plot/comparison.json")
     #"plot/comparison.json"
