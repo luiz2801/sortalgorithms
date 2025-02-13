@@ -1,24 +1,26 @@
 #include <iostream>
 
-#include "algorithms/quicksort.h"  
+#include "algorithms/quicksort.h"
 #include "algorithms/quickiterative.h"
-#include "algorithms/heapsort.h"   
-#include "algorithms/shellsort.h"  
+#include "algorithms/heapsort.h"
+#include "algorithms/shellsort.h"
 #include "utils/toJson.h"
 #include "utils/loadPythonModule.h"
 #include "utils/calculateTime.h"
+
 using namespace std;
 
 int main() {
-    //clearjson("plot/comparison.json");
-    clearJson("plot/comparison.json");  // Corrigido para "clearJson" (com "J" maiúsculo)
+    clearJson("plot/comparison.json");
 
     srand(time(0));  // Inicializa o gerador de números aleatórios
-    int exp = 18;
+    int min = 1;
+    int max = 18;
     vector<int> A;
-    quickTime(A, exp);
-    heapTime(A, exp);
-    shellTime(A, exp);
+    quickTime(A, min, max);
+    iterativeTime(A, min, max);
+    heapTime(A, min, max);
+    shellTime(A, min, max);
     loadPythonModule();
     return 0;
     

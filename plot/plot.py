@@ -1,16 +1,18 @@
 import json
-import matplotlib
-matplotlib.use('GTK3Agg')
+# import matplotlib # DESCOMENTAR ESSA LINHA SE O MATPLOTLIB USA BACKEND COM GTK3Agg
+# matplotlib.use('GTK3Agg') # DESCOMENTAR ESSA LINHA SE O MATPLOTLIB USA BACKEND COM GTK3Agg
 import matplotlib.pyplot as plt
 
 def get_doc(path: str):
     # Carrega o conteúdo do arquivo JSON
-    with open(path, "r") as f:
+    with open(path) as f:
         doc = json.load(f)
         return doc
+
+
 def plotar_grafico():
     doc = get_doc("plot/comparison.json")
-    #"plot/comparison.json"
+
     # Extrai os tamanhos e tempos de execução para cada algoritmo
     sizes = [obj.get("size") for obj in doc.get("QuickSort", [])]
     quick_times = [obj.get("time") for obj in doc.get("QuickSort", [])]

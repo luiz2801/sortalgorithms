@@ -33,8 +33,8 @@ long medirTempo(Func func, vector<int>& A) {
 
 
 
-void quickTime(vector<int>& A, int exp) {
-    for (int i = pow(2, 10); i <= pow(2, exp); i *= 2) {  // Limitação para tamanhos mais controlados
+void quickTime(vector<int>& A, int min, int max) {
+    for (int i = pow(2, min); i <= pow(2, max); i *= 2) {  // Limitação para tamanhos mais controlados
         fillVector(A, i);
         long long time = medirTempo([&](vector<int>& vec) { quickSort(vec, 0, vec.size() - 1); }, A);
         cout << "Quicksort: Tempo para ordenar vetor de " << i << " elementos: " << time / (float)1000000 << " s" << endl;
@@ -43,9 +43,19 @@ void quickTime(vector<int>& A, int exp) {
     }
 }
 
+void iterativeTime(vector<int>& A, int min, int max) {
+    for (int i = pow(2, min); i <= pow(2, max); i *= 2) {  // Limitação para tamanhos mais controlados
+        fillVector(A, i);
+        long long time = medirTempo([&](vector<int>& vec) { iterativeQuickSort(vec); }, A);
+        cout << "Quicksort Iterativo: Tempo para ordenar vetor de " << i << " elementos: " << time / (float)1000000 << " s" << endl;
+        // Aqui chamamos a função writeJson
+        writeJson("QuickIterative", time, A.size() - 1);
+    }
+}
 
-void heapTime(vector<int>& A, int exp) {
-    for (int i = pow(2, 10); i <= pow(2, exp); i *= 2) {  // Limitação para tamanhos mais controlados
+
+void heapTime(vector<int>& A, int min, int max) {
+    for (int i = pow(2, min); i <= pow(2, max); i *= 2) {  // Limitação para tamanhos mais controlados
         fillVector(A, i);
         long long time = medirTempo([&](vector<int>& vec) { heapSort(vec); }, A);
         cout <<"HeapSort: Tempo para ordenar vetor de " << i << " elementos: " << time/(float)1000000 << " s" << endl;
@@ -54,8 +64,8 @@ void heapTime(vector<int>& A, int exp) {
     }
 }
 
-void shellTime(vector<int>& A, int exp) {
-    for (int i = pow(2, 10); i <= pow(2, exp); i *= 2) {  // Limitação para tamanhos mais controlados
+void shellTime(vector<int>& A, int min, int max) {
+    for (int i = pow(2, min); i <= pow(2, max); i *= 2) {  // Limitação para tamanhos mais controlados
         fillVector(A, i);
         long long time = medirTempo([&](vector<int>& vec) { shellSort(vec); }, A);
         cout <<"ShellSort: Tempo para ordenar vetor de " << i << " elementos: " << time/(float)1000000 << " s" << endl;
