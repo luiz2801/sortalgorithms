@@ -3,11 +3,13 @@ import matplotlib
 matplotlib.use('GTK3Agg')
 import matplotlib.pyplot as plt
 
-def plotar_grafico():
+def get_doc(path: str):
     # Carrega o conteúdo do arquivo JSON
-    with open("plot/comparison.json") as f:
+    with open(path, "r") as f:
         doc = json.load(f)
-
+def plotar_grafico():
+    doc = get_doc("plot/comparison.json")
+    #"plot/comparison.json"
     # Extrai os tamanhos e tempos de execução para cada algoritmo
     sizes = [obj.get("size") for obj in doc.get("QuickSort", [])]
     quick_times = [obj.get("time") for obj in doc.get("QuickSort", [])]
@@ -46,6 +48,3 @@ def plotar_grafico():
 
     # Exibe o gráfico
     plt.show()
-
-# Chama a função para plotar o gráfico
-plotar_grafico()
