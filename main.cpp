@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -7,9 +6,9 @@
 #include <cmath>
 #include <Python.h>
 #include "algorithms/quickiterative.h"
-#include "algorithms/quicksort.h"  
-#include "algorithms/heapsort.h"   
-#include "algorithms/shellsort.h"  
+#include "algorithms/quicksort.h"
+#include "algorithms/heapsort.h"
+#include "algorithms/shellsort.h"
 #include "algorithms/toJson.h"
 
 using namespace std;
@@ -23,71 +22,57 @@ void fillVector(vector<int>& A, int k) {
     }
 }
 
-
 // Função para medir o tempo de execução de um algoritmo de ordenação
 template <typename Func>
 long medirTempo(Func func, vector<int>& A) {
-    // Marca o tempo de início
     auto inicio = chrono::high_resolution_clock::now();
-    
-    // Chama a função de ordenação passada como argumento
-    func(A);  
-    
-    // Marca o tempo de término
+    func(A);  // Chama o algoritmo de ordenação
     auto fim = chrono::high_resolution_clock::now();
-    
-    // Calcula e retorna a diferença em milissegundos entre o tempo de início e fim
     return chrono::duration_cast<chrono::microseconds>(fim - inicio).count();
 }
 
-
-
 void quickTime(vector<int>& A, int exp) {
-    for (int i = pow(2, 10); i <= pow(2, exp); i *= 2) {  // Limitação para tamanhos mais controlados
+    for (int i = pow(2, 10); i <= pow(2, exp); i *= 2) {
         fillVector(A, i);
         long long time = medirTempo([&](vector<int>& vec) { quickSort(vec, 0, vec.size() - 1); }, A);
         cout << "Quicksort: Tempo para ordenar vetor de " << i << " elementos: " << time / (float)1000000 << " s" << endl;
-        // Aqui chamamos a função writeJson
         writeJson("QuickSort", time, A.size() - 1);
     }
 }
 
 void iterativeTime(vector<int>& A, int exp) {
-    for (int i = pow(2, 10); i <= pow(2, exp); i *= 2) {  // Limitação para tamanhos mais controlados
+    for (int i = pow(2, 10); i <= pow(2, exp); i *= 2) {
         fillVector(A, i);
         long long time = medirTempo([&](vector<int>& vec) { iterativeQuickSort(vec); }, A);
         cout << "Quicksort iterativo: Tempo para ordenar vetor de " << i << " elementos: " << time / (float)1000000 << " s" << endl;
-        // Aqui chamamos a função writeJson
         writeJson("QuickIterative", time, A.size() - 1);
     }
 }
 
-
 void heapTime(vector<int>& A, int exp) {
-    for (int i = pow(2, 10); i <= pow(2, exp); i *= 2) {  // Limitação para tamanhos mais controlados
+    for (int i = pow(2, 10); i <= pow(2, exp); i *= 2) {
         fillVector(A, i);
         long long time = medirTempo([&](vector<int>& vec) { heapSort(vec); }, A);
-        cout <<"HeapSort: Tempo para ordenar vetor de " << i << " elementos: " << time/(float)1000000 << " s" << endl;
-        // Aqui chamamos a função writeJson
+        cout << "HeapSort: Tempo para ordenar vetor de " << i << " elementos: " << time / (float)1000000 << " s" << endl;
         writeJson("HeapSort", time, i);
     }
 }
 
 void shellTime(vector<int>& A, int exp) {
-    for (int i = pow(2, 10); i <= pow(2, exp); i *= 2) {  // Limitação para tamanhos mais controlados
+    for (int i = pow(2, 10); i <= pow(2, exp); i *= 2) {
         fillVector(A, i);
         long long time = medirTempo([&](vector<int>& vec) { shellSort(vec); }, A);
-        cout <<"ShellSort: Tempo para ordenar vetor de " << i << " elementos: " << time/(float)1000000 << " s" << endl;
-        // Aqui chamamos a função writeJson
+        cout << "ShellSort: Tempo para ordenar vetor de " << i << " elementos: " << time / (float)1000000 << " s" << endl;
         writeJson("ShellSort", time, i);
     }
 }
 
-
 int main() {
+    clearJson("plot/comparison.json");  // Limpa o arquivo JSON antes de iniciar a gravação
     srand(time(0));  // Inicializa o gerador de números aleatórios
-    int exp = 26;
+    int exp = 18;
     vector<int> A;
+    
     quickTime(A, exp);
     iterativeTime(A, exp);
     heapTime(A, exp);
@@ -106,17 +91,12 @@ int main() {
     Py_XDECREF(pName);
 
     if (pModule != nullptr) {
-        // Obtém a função desejada do script
         PyObject *pFunc = PyObject_GetAttrString(pModule, "plotar_grafico");
-
-        // Verifica se a função pode ser chamada
         if (PyCallable_Check(pFunc)) {
-            // Chama a função Python sem argumentos
             PyObject_CallObject(pFunc, nullptr);
         } else {
             std::cerr << "Erro: Função não encontrada ou não pode ser chamada.\n";
         }
-
         Py_XDECREF(pFunc);
         Py_XDECREF(pModule);
     } else {
