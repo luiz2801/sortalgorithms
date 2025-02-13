@@ -49,6 +49,7 @@ int partition(std::vector<int>& arr, int low, int high) {
 // Função recursiva para ordenar o vetor usando QuickSort
 void quickSort(std::vector<int>& arr, int low, int high) {
     if (low < high) {
+        
         // Particiona o vetor e obtém o índice do pivô
         int pi = partition(arr, low, high);
 
