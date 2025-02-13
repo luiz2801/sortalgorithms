@@ -1,16 +1,28 @@
 import json
 import matplotlib.pyplot as plt
 
-def plotar_grafico():
-    with open("plot/comparison.json") as f:
+def get_doc(path: str):
+    with open(path, "r") as f:
         doc = json.load(f)
+        f.close()
+    return doc
 
-    sizes = [obj.get("size") for obj in doc["QuickSort"]] # só precisa pegar uma vez, afinal todos são iguais
+def clean_doc(path: str):
+    with open(path, "w"):
+        pass
+    
+
+def plotar_grafico():
+    # Ler o conteúdo do arquivo JSON
+    path = "plot/comparison.json"
+    doc = get_doc(path)
+    clean_doc(path)
+
+    # Extrair os dados necessários
+    sizes = [obj.get("size") for obj in doc["QuickSort"]]  # só precisa pegar uma vez, afinal todos são iguais
     quick_times = [obj.get("time") for obj in doc["QuickSort"]]
     shell_times = [obj.get("time") for obj in doc["ShellSort"]]
     heap_times = [obj.get("time") for obj in doc["HeapSort"]]
-    f.close()
-
 
     # Plotar os resultados
     plt.figure(figsize=(10, 6))
