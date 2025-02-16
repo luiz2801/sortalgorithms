@@ -1,51 +1,35 @@
 #include <vector>
 #include <stack>
-
-void swap(int& a, int& b) {
-    int temp = a;
-    a = b;
-    b = temp;
-}
-
-int iterativePartition(std::vector<int>& arr, int low, int high) {
-    int pivot = arr[high];
-    int i = low - 1;
-
-    for (int j = low; j < high; j++) {
-        if (arr[j] <= pivot) {
-            i++;
-            swap(arr[i], arr[j]);
-        }
-    }
-    swap(arr[i + 1], arr[high]);
-    return i + 1;
-}
+#include <algorithm> // For std::swap
 
 void iterativeQuickSort(std::vector<int>& arr) {
-    std::stack<int> stack;
-    int low = 0;
-    int high = arr.size() - 1;
+    if (arr.empty()) return;
 
-    stack.push(low);
-    stack.push(high);
+    std::stack<std::pair<int, int>> stack;
+    stack.push({0, arr.size() - 1});
 
     while (!stack.empty()) {
-        high = stack.top();
-        stack.pop();
-        low = stack.top();
+        int low = stack.top().first;
+        int high = stack.top().second;
         stack.pop();
 
-        int pivotIndex = iterativePartition(arr, low, high);
+        int pivot = arr[high];
+        int i = low - 1;
+
+        for (int j = low; j < high; ++j) {
+            if (arr[j] <= pivot) {
+                ++i;
+                std::swap(arr[i], arr[j]);
+            }
+        }
+        std::swap(arr[i + 1], arr[high]);
+        int pivotIndex = i + 1;
 
         if (pivotIndex - 1 > low) {
-            stack.push(low);
-            stack.push(pivotIndex - 1);
+            stack.push({low, pivotIndex - 1});
         }
-
         if (pivotIndex + 1 < high) {
-            stack.push(pivotIndex + 1);
-            stack.push(high);
+            stack.push({pivotIndex + 1, high});
         }
     }
 }
-

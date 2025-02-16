@@ -44,8 +44,8 @@ long long medirTempo(Func func, vector<int>& A) {
 
 void quickTime(vector<int>& A, int min, int max) {
     for (int i = static_cast<int>(pow(2, min)); i <= static_cast<int>(pow(2, max)); i *= 2) {
-        fillVector(A, i); //random
-        //fillSortedVector(A, i);
+        //fillVector(A, i); //random
+        fillSortedVector(A, i);
         long long time = medirTempo([&](vector<int>& vec) { quickSort(vec, 0, vec.size() - 1); }, A);
         cout << fixed << setprecision(6) << "Quicksort: Tempo para ordenar vetor de " 
         << i << " elementos: " << time / 1000000.0 << " s" << endl;
@@ -55,8 +55,8 @@ void quickTime(vector<int>& A, int min, int max) {
 
 void heapTime(vector<int>& A, int min, int max) {
     for (int i = static_cast<int>(pow(2, min)); i <= static_cast<int>(pow(2, max)); i *= 2) {
-        fillVector(A, i);
-        //fillSortedVector(A, i);
+        //fillVector(A, i);
+        fillSortedVector(A, i);
         long long time = medirTempo([&](vector<int>& vec) { heapSort(vec); }, A);
         cout << fixed << setprecision(6) << "HeapSort: Tempo para ordenar vetor de " << i 
              << " elementos: " << time / 1000000.0 << " s" << endl;
@@ -76,6 +76,18 @@ void shellTime(vector<int>& A, int min, int max) {
         writeJson("ShellSort", time, i);
     }
 }
+
+void shellTimeOrdered(vector<int>& A, int min, int max) {
+    for (int i = static_cast<int>(pow(2, min)); i <= static_cast<int>(pow(2, max)); i *= 2) {
+        //fillVector(A, i);
+        fillSortedVector(A, i);
+        long long time = medirTempo([&](vector<int>& vec) { shellSort(vec); }, A);
+        cout << fixed << setprecision(6) << "ShellSort Ordenado: Tempo para ordenar vetor de " << i 
+             << " elementos: " << time / 1000000.0 << " s" << endl;
+        writeJson("ShellSort Ordenado", time, i);
+    }
+}
+
 
 
 

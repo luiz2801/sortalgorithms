@@ -14,13 +14,14 @@ int main() {
     clearJson("plot/comparison.json");  // Corrigido para "clearJson" (com "J" maiúsculo)
     
     srand(time(0));  // Inicializa o gerador de números aleatórios
-    int min = 17;
-    int max = 20; // maximo possível é 30
+    int min = 19;
+    int max = 24; // maximo possível é 30
     vector<int> A;
+    shellTime(A, min, max);
+    shellTimeOrdered(A, min, max);
+    //heapTime(A, min, max);
     //iterativeTime(A, min, max);
-    //shellTime(A, min, max);
-    heapTime(A, min, max);
-    quickTime(A, min, max);
+    //quickTime(A, min, max);
     loadPythonModule();
     return 0;
     
