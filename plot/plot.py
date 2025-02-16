@@ -14,7 +14,7 @@ def plotar_grafico():
     # Extrai os tamanhos e tempos de execução para cada algoritmo
     sizes = [obj.get("size") for obj in doc.get("HeapSort", [])]
     quick_times = [obj.get("time") for obj in doc.get("QuickSort", [])]
-    iterative_times = [obj.get("time") for obj in doc.get("QuickIterative", [])]
+    #iterative_times = [obj.get("time") for obj in doc.get("QuickIterative", [])]
     heap_times = [obj.get("time") for obj in doc.get("HeapSort", [])]
     shell_times = [obj.get("time") for obj in doc.get("ShellSort", [])]
     # Verifica se há dados para plotar
@@ -26,23 +26,23 @@ def plotar_grafico():
     plt.figure(figsize=(10, 6))
     if quick_times:
         plt.plot(sizes, quick_times, label="QuickSort", marker='o')
-    if iterative_times:
-        plt.plot(sizes, iterative_times, label="QuickIterative", marker='s')
+    #if iterative_times:
+    #    plt.plot(sizes, iterative_times, label="QuickIterative", marker='s')
     if heap_times:
         plt.plot(sizes, heap_times, label="HeapSort", marker='^')
-    if shell_times:
-       plt.plot(sizes, shell_times, label="ShellSort", marker='d')
+    #if shell_times:
+    #   plt.plot(sizes, shell_times, label="ShellSort", marker='d')
     
 
     # Adiciona rótulos e título
     plt.xlabel('Tamanho do Vetor (n)')
     plt.ylabel('Tempo de Execução (s)')
-    plt.title('Comparação de Tempos de Execução dos Algoritmos de Ordenação')
+    plt.title('Comparação de Tempos de Execução dos Algoritmos nlog(n) de Ordenação em um Vetor Aleatório')
 
     # Configura a escala logarítmica para o eixo x
-    #plt.xscale('log', base=2)
+    plt.xscale('log', base=2)
     #plt.yscale('log')  # Escala logarítmica para o eixo y
-    plt.xscale('linear')
+    #plt.xscale('linear')
     plt.yscale('linear')
 
 
